@@ -16,33 +16,50 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final questions = [
+    {
+      'questionText': 'What\'s your favorite programming language?',
+      'answers': ['Javascript', 'Go', 'Dart']
+    },
+    {
+      'questionText': 'What\'s your favorite framework?',
+      'answers': ['Svelte', 'Vue', 'React']
+    },
+    {
+      'questionText': 'What is you favorite job?',
+      'answers': ['Software', 'Teaching', 'Firefighting']
+    }
+  ];
+
   var _questionIndex = 0;
 
   void _answerQuestion() {
     setState(() {
       _questionIndex = _questionIndex + 1;
     });
+    if (_questionIndex < questions.length) {}
   }
 
   @override
   Widget build(BuildContext context) {
-    var questions = [
-      'What\'s your favorite programming language?',
-      'What\'s your favorite framework?',
-    ];
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text('Forms App'),
         ),
-        body: Column(
-          children: <Widget>[
-            Question(questions[_questionIndex]),
-            Answer(_answerQuestion),
-            Answer(_answerQuestion),
-            Answer(_answerQuestion),
-          ],
-        ),
+        body: _questionIndex < questions.length
+            ? Column(
+                children: <Widget>[
+                  Question(questions[_questionIndex]['questionText']),
+                  ...(questions[_questionIndex]['answers'] as List<String>)
+                      .map((answer) {
+                    return Answer(_answerQuestion, answer);
+                  }).toList()
+                ],
+              )
+            : Center(
+                child: Text('Out of questions.'),
+              ),
       ),
     );
   }
