@@ -1,104 +1,60 @@
+// 1. output an AppBar and some text below it
+// 2. Add a button which changes the text (to any other text)
+// 3. Split the app into 3 widgets, App, TextControl, and Text
 import 'package:flutter/material.dart';
-
-import './result.dart';
-import './quiz.dart';
-// void main() {
-//   runApp(MyApp());
-// }
+import 'package:english_words/english_words.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   @override
-  State<StatefulWidget> createState() {
-    return _MyAppState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Startup Name Generator',
+      home: RandomWords(),
+    );
   }
 }
 
-class _MyAppState extends State<MyApp> {
-  final _questions = [
-    {
-      'questionText': 'What\'s your favorite programming language?',
-      'answers': [
-        {
-          'text': 'Javascript',
-          'score': 10,
-        },
-        {
-          'text': 'Go',
-          'score': 5,
-        },
-        {'text': 'Java', 'score': 1}
-      ]
-    },
-    {
-      'questionText': 'What\'s your favorite framework?',
-      'answers': [
-        {
-          'text': 'Svelte',
-          'score': 10,
-        },
-        {
-          'text': 'Vue',
-          'score': 7,
-        },
-        {
-          'text': 'React',
-          'score': 3,
-        }
-      ]
-    },
-    {
-      'questionText': 'What is you favorite job?',
-      'answers': [
-        {
-          'text': 'Software',
-          'score': 10,
-        },
-        {
-          'text': 'Teaching',
-          'score': 6,
-        },
-        {
-          'text': 'Firefighting',
-          'score': 6,
-        }
-      ]
-    }
-  ];
+class RandomWords extends StatefulWidget {
+  @override
+  _RandomWordsState createState() => _RandomWordsState();
+}
 
-  var _questionIndex = 0;
-  var _totalScore = 0;
+class _RandomWordsState extends State<RandomWords> {
+  final _suggestions = <WordPair>[];
+  final _biggerFont = TextStyle(fontSize: 18.0);
 
-  void _resetQuiz() {
-    setState(() {
-      _questionIndex = 0;
-      _totalScore = 0;
-    });
+  Widget _buildSuggestions() {
+    return ListView.builder(
+        padding: EdgeInsets.all(16.0),
+        itemBuilder: /*1*/ (context, i) {
+          if (i.isOdd) return Divider(); /*2*/
+
+          final index = i ~/ 2; /*3*/
+          if (index >= _suggestions.length) {
+            _suggestions.addAll(generateWordPairs().take(10)); /*4*/
+          }
+          return _buildRow(_suggestions[index]);
+        });
   }
 
-  void _answerQuestion(int score) {
-    _totalScore += score;
-    setState(() {
-      _questionIndex = _questionIndex + 1;
-    });
-    if (_questionIndex < _questions.length) {}
+  Widget _buildRow(WordPair pair) {
+    return ListTile(
+      title: Text(
+        pair.asPascalCase,
+        style: _biggerFont,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Forms App'),
-        ),
-        body: _questionIndex < _questions.length
-            ? Quiz(
-                answerQuestion: _answerQuestion,
-                questions: _questions,
-                questionIndex: _questionIndex)
-            : Result(_totalScore, _resetQuiz),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Startup Name Generator'),
       ),
+      body: _buildSuggestions(),
     );
   }
 }
