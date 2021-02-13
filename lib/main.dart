@@ -1,9 +1,5 @@
-// 1. output an AppBar and some text below it
-// 2. Add a button which changes the text (to any other text)
-// 3. Split the app into 3 widgets, App, TextControl, and Text
 import 'package:flutter/material.dart';
-import './change_text.dart';
-// import 'package:english_words/english_words.dart';
+import './transaction.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,51 +7,54 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Changing the Text',
-      home: ChangeText(),
+      title: 'Flutter App',
+      home: HomePage(),
     );
   }
 }
 
-// class RandomWords extends StatefulWidget {
-//   @override
-//   _RandomWordsState createState() => _RandomWordsState();
-// }
+class HomePage extends StatelessWidget {
+  final List<Transaction> transactions = [
+    Transaction(
+      id: 't1',
+      title: 'New Shoes',
+      amount: 52.25,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't2',
+      title: 'Coffee',
+      amount: 7.99,
+      date: DateTime.now(),
+    ),
+  ];
 
-// class _RandomWordsState extends State<RandomWords> {
-//   final _suggestions = <WordPair>[];
-//   final _biggerFont = TextStyle(fontSize: 18.0);
-
-//   Widget _buildSuggestions() {
-//     return ListView.builder(
-//         padding: EdgeInsets.all(16.0),
-//         itemBuilder: /*1*/ (context, i) {
-//           if (i.isOdd) return Divider(); /*2*/
-
-//           final index = i ~/ 2; /*3*/
-//           if (index >= _suggestions.length) {
-//             _suggestions.addAll(generateWordPairs().take(10)); /*4*/
-//           }
-//           return _buildRow(_suggestions[index]);
-//         });
-//   }
-
-//   Widget _buildRow(WordPair pair) {
-//     return ListTile(
-//       title: Text(
-//         pair.asPascalCase,
-//         style: _biggerFont,
-//       ),
-//     );
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Startup Name Generator'),
-//       ),
-//       body: _buildSuggestions(),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Flutter App'),
+      ),
+      body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              width: double.infinity,
+              child: Card(
+                color: Colors.blue,
+                child: Text('CHART!'),
+                elevation: 5,
+              ),
+            ),
+            Column(
+              children: transactions.map((item) {
+                return Card(
+                  child: Text(item.title),
+                );
+              }).toList(),
+            ),
+          ]),
+    );
+  }
+}
