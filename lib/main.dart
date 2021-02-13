@@ -2,6 +2,7 @@
 // 2. Add a button which changes the text (to any other text)
 // 3. Split the app into 3 widgets, App, TextControl, and Text
 import 'package:flutter/material.dart';
+import './change_text.dart';
 // import 'package:english_words/english_words.dart';
 
 void main() => runApp(MyApp());
@@ -13,65 +14,6 @@ class MyApp extends StatelessWidget {
       title: 'Changing the Text',
       home: ChangeText(),
     );
-  }
-}
-
-class ChangeText extends StatefulWidget {
-  @override
-  _ChangeTextState createState() => _ChangeTextState();
-}
-
-class _ChangeTextState extends State<ChangeText> {
-  String _textToChange = 'Starting text.';
-
-  void handleChangeText() {
-    if (_textToChange == 'Starting text.') {
-      setState(() {
-        _textToChange = 'This has changed';
-      });
-    } else {
-      setState(() {
-        _textToChange = 'Starting text.';
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Change the Text Button'),
-        ),
-        body: Container(
-            height: 75.0,
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            decoration: BoxDecoration(color: Colors.green[300]),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        _textToChange,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Expanded(
-                        flex: 1,
-                        child: ElevatedButton(
-                          child: Text(
-                            'change it!',
-                            textAlign: TextAlign.center,
-                          ),
-                          onPressed: handleChangeText,
-                        ))
-                  ],
-                ),
-              ],
-            )));
   }
 }
 
